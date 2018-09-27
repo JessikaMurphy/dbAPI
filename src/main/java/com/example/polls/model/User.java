@@ -37,7 +37,7 @@ public class User extends DateAudit {
 	private String password;
 	
 	@Size(max = 150)
-	private String paintList;
+	private String lastPaintAdded;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -52,18 +52,29 @@ public class User extends DateAudit {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.paintList = "nothing here yet";
+		this.lastPaintAdded = "";
 	}
 
 	public Long getId() {
 		return id;
 	}
-	public String getPaintList() {
+	public String getLastPaintAdded() {
+		return lastPaintAdded;
+	}
+	public void setLastPaintAdded(String paintJson) {
+		this.lastPaintAdded = paintJson;
+		/*paintList = trimFront(paintList);
+		if(this.paintList.isEmpty())
+			this.paintList = paintList;
+		else
+			this.paintList = "{," + this.paintList + paintList + "}";*/
+	}
+	/*private String trimFront(String paintList) {
+		if(paintList.startsWith("Paint")) {
+			paintList.replaceFirst("Paint", "");
+		}
 		return paintList;
-	}
-	public void setPaintList(String paintList) {
-		this.paintList = paintList;
-	}
+	}*/
 
 	public void setId(Long id) {
 		this.id = id;

@@ -1,14 +1,31 @@
-package com.example.polls.payload;
+package com.example.polls.model;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class AddPaintRequest {
+import com.example.polls.model.audit.UserDateAudit;
 
-	@NotNull
-	
-	private long id;
+@Entity
+@Table(name = "paints", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "user_id",
+                "id"
+        })
+})
+public class Paint extends UserDateAudit {
+
+	@Id
+    private Long id;
+    
 	@NotBlank
 	@Size(max = 20)
 	private String paintId;
@@ -21,6 +38,17 @@ public class AddPaintRequest {
 	@NotBlank
 	@Size(max = 20)
 	private String brand;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+	public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 	public void setId(long id) {
 		this.id = id;
